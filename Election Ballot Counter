@@ -1,0 +1,91 @@
+
+class ElectionBallotCounter:
+   def __init__(self):
+       self.candidates = {}
+
+
+   def add_candidate(self, candidate_name):
+       if candidate_name not in self.candidates:
+           self.candidates[candidate_name] = 0
+           print(f"Candidate '{candidate_name}' added successfully.")
+       else:
+           print(f"Error: Candidate '{candidate_name}' already exists.")
+
+
+   def vote_for_candidate(self, candidate_name):
+       if candidate_name in self.candidates:
+           self.candidates[candidate_name] += 1
+           print(f"Vote for candidate '{candidate_name}' recorded successfully.")
+       else:
+           print(f"Error: Candidate '{candidate_name}' not found.")
+
+
+  
+   def tally_votes(self, candidate_index=0):
+       """
+       Recursively prints the election results for each candidate.
+       """
+       if not self.candidates:
+           print("No candidates found.")
+           return
+
+
+       if candidate_index < len(self.candidates):
+           candidate_name = list(self.candidates.keys())[candidate_index]
+           votes = self.candidates[candidate_name]
+           print(f"{candidate_name}: {votes} votes")
+           self.tally_votes(candidate_index + 1)
+       else:
+           print("Election results printed successfully.")
+
+
+
+
+   def winner(self):
+       if not self.candidates:
+           print("No candidates found.")
+           return
+
+
+       winner_name = max(self.candidates, key=self.candidates.get)
+       winner_votes = self.candidates[winner_name]
+       print(f"The winner is '{winner_name}' with {winner_votes} votes.")
+
+
+   def add_candidate_interactive(self):
+       candidate_name = input("Enter the name of the candidate to add: ")
+       self.add_candidate(candidate_name)
+
+
+   def vote_interactive(self):
+       candidate_name = input("Enter the name of the candidate you want to vote for: ")
+       self.vote_for_candidate(candidate_name)
+
+
+   def run_election(self):
+       print("Welcome to the Election Ballot Counter!")
+       print("Let's start by adding candidates.")
+
+
+       num_candidates = int(input("Enter the number of candidates to add: "))
+       for _ in range(num_candidates):
+           self.add_candidate_interactive()
+
+
+       print("\nCandidates added. Now, voters can cast their votes.")
+
+
+       num_votes = int(input("Enter the number of votes to record: "))
+       for _ in range(num_votes):
+           self.vote_interactive()
+
+
+       print("\nElection completed. Here are the results:")
+       self.tally_votes()
+       self.winner()
+
+
+# Example usage
+if __name__ == "__main__":
+   election = ElectionBallotCounter()
+   election.run_election()
